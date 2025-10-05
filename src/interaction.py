@@ -1,4 +1,19 @@
-# src/interaction.py
+"""
+Interaction Module for Humanoid Classroom Robot
+------------------------------------------------
+Handles user and robot interactions, logging, and undo functionality.
+
+Classes:
+    - InteractionModule: Manages interaction logs, displays messages, 
+      records actions, and allows undoing the last interaction.
+
+Key Features:
+    - Logging actions performed by or for the robot
+    - Displaying messages to users or the CLI
+    - Undoing the most recent interaction
+    - Retrieving full interaction history
+"""
+
 from typing import List, Tuple, Optional
 
 class InteractionModule:
