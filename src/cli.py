@@ -1,4 +1,23 @@
-# src/cli.py
+"""
+Humanoid Classroom Robot System
+---------------------------------
+This implementation reflects the UML Class, Sequence, and Activity Diagrams 
+for the Humanoid Classroom Robot System. 
+
+Classes:
+    - RobotController
+    - TaskManager
+    - DeliveryTask
+    - SensorModule
+    - InteractionModule
+
+Key Features:
+    - Delivery task creation, execution, and error handling
+    - Temperature monitoring and anomaly detection
+    - Interaction logging and greetings
+    - State transitions for the RobotController
+"""
+
 import json
 from .robot_controller import RobotController
 
