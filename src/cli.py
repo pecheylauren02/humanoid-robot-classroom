@@ -1,4 +1,5 @@
 # src/cli.py
+import json
 from .robot_controller import RobotController
 
 def main():
@@ -29,12 +30,12 @@ def main():
             name = " ".join(parts[1:])
             print(robot.greet_student(name))
         elif verb == "status":
-            import json
             print(json.dumps(robot.get_status(), indent=2))
         elif verb == "undo":
             undone = robot.interaction.undo_last()
             print("Undid:", undone)
         else:
             print("Unknown or malformed command.")
+
 if __name__ == "__main__":
     main()
