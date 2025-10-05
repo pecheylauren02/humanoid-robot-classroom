@@ -17,12 +17,26 @@ Key Features:
 from typing import List, Tuple, Optional
 
 class InteractionModule:
+    """
+    Manages robot-user interactions and logs actions.
+
+    Attributes:
+        id (str): Identifier for this interaction module instance.
+        interaction_log (List[Tuple[str, str]]): History of all actions.
+        undo_stack (List[Tuple[str, str]]): Stack for undoable actions.
+    """
     def __init__(self, id_: str):
         self.id = id_
         self.interaction_log: List[Tuple[str, str]] = []
         self.undo_stack: List[Tuple[str, str]] = []
 
     def display_message(self, message: str) -> None:
+        """
+        Display a message from the robot.
+
+        Args:
+        message (str): Text message to display.
+        """
         print(f"[Robot] {message}")
 
     def get_command(self) -> str:
@@ -35,6 +49,12 @@ class InteractionModule:
         print(f"[InteractionModule] logged: {action} {who}")
 
     def undo_last(self) -> Optional[Tuple[str, str]]:
+        """
+        Undo the most recent logged action.
+
+        Returns:
+        Optional[Tuple[str, str]]: The undone action and associated actor, or None if no actions to undo.
+        """
         if not self.undo_stack:
             return None
         item = self.undo_stack.pop()
