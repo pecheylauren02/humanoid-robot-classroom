@@ -3,6 +3,7 @@ from collections import deque
 from typing import Deque, List, Optional
 from .tasks import DeliveryTask
 
+
 class TaskManager:
     def __init__(self, id_: str):
         self.id = id_
