@@ -49,15 +49,13 @@ def main():
     robot = RobotController("R-001")
     robot.start()
 
-    print("\nWelcome to the Humanoid Classroom Robot System!\n")
-    input("Press ENTER to continue...")
-
+    print("\nWelcome to the Humanoid Classroom Robot System!")
     print("\nThis robot can help you with classroom tasks like delivering items, monitoring the environment, and greeting students.")
     input("\nPress ENTER to see the commands...")
 
     print(COMMANDS_GUIDE)
 
-    print("\nGreat! Now you can type a command to get started:")
+    print("Great! Now you can type a command to get started:\n")
 
     while True:
         try:
@@ -73,8 +71,13 @@ def main():
         verb = parts[0].lower()
 
         if verb == "exit":
-            print("Exiting CLI. Goodbye!")
-            break
+            confirm = input("\nAre you sure you want to exit? (y/n): ").strip().lower()
+            if confirm in ["y", "yes"]:
+                print("\nOkay, mission complete! The robot is taking a break. See you next time! 👋")
+                break
+            else:
+                print("Exit cancelled. Back to the robot commands.")
+                continue
 
         elif verb == "help":
             print(COMMANDS_GUIDE)
@@ -121,7 +124,7 @@ def main():
                 print("\nNothing to undo.")
 
         else:
-            print("Unknown or malformed command. Type 'help' to see available commands.")
+            print("Oops! That command does not exist. Type 'help' to see a list of valid commands.")
 
 if __name__ == "__main__":
     main()
