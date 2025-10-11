@@ -24,27 +24,37 @@ from .robot_controller import RobotController
 def main():
     robot = RobotController("R-001")
     robot.start()
-    print("\nWelcome to the Humanoid Classroom Robot System!")
-    input("Press Enter to continue...")
+    print("\nWelcome to the Humanoid Classroom Robot System!\n")
+    input("Press ENTER to continue...")
 
     print("\nThis robot can help you with classroom tasks like delivering items, monitoring the environment, and greeting students.")
-    input("Press Enter to see the commands...")
+    input("Press ENTER to see the commands...")
 
-    print(
-        "\nCommands:\n"
-        "  • deliver <item> from <source> to <destination>  - Ask the robot to deliver something\n"
-        "  • monitor                                        - Check classroom sensors\n"
-        "  • greet <name>                                  - Robot greets a student\n"
-        "  • status                                        - See what the robot is doing\n"
-        "  • undo                                          - Undo last action\n"
-        "  • exit                                          - Quit the program"
-)
-    input("Press Enter for an example command...")
+    print("""
+          Commands Guide:
 
-    print("\nExample: deliver book from teacher to student")
-    input("Press Enter to start using the robot...")
+          1. Ask the robot to deliver an item
+          Command: deliver <item> from <source> to <destination>
 
-    print("\nYou are ready! Type a command at the prompt '>' and press Enter.")
+          2. Check classroom temperature
+          Command: monitor
+
+          3. Robot greets a student
+          Command: greet <name>
+
+          4. Show what the robot is doing
+          Command: status
+
+          5. Undo the last action
+          Command: undo
+
+          6. Quit the program
+          Command: exit
+        """)
+
+    input("\nPress Enter to start using the robot...")
+
+    print("\nYou are ready! Type one of the commands above and press Enter.")
 
 
     while True:
