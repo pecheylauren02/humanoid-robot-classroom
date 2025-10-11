@@ -42,3 +42,19 @@ The program applies object-oriented design techniques and uses data structures e
 - **Strings and UUIDs:** Used to generate unique task identifiers for logging and tracking.  
 
 ---
+
+## 4. Implementation and Execution
+
+### Running the Code
+1. Clone the repository:
+   git clone https://github.com/pecheylauren02/humanoid-robot-classroom
+
+2. Open the folder in your Python IDE (e.g., Visual Studio Code or PyCharm).
+
+3. Run the program: 
+    python main.py
+
+4. Enter a sample command such as:
+    deliver book from teacher to student
+
+The robot will interpret this command, enqueue the delivery task, and execute it sequentially, providing console feedback at each stage.
