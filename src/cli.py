@@ -28,7 +28,7 @@ def main():
     input("Press ENTER to continue...")
 
     print("\nThis robot can help you with classroom tasks like delivering items, monitoring the environment, and greeting students.")
-    input("Press ENTER to see the commands...")
+    input("\nPress ENTER to see the commands...")
 
     print("""
           Commands Guide:
@@ -52,9 +52,7 @@ def main():
           Command: exit
         """)
 
-    input("\nPress Enter to start using the robot...")
-
-    print("\nYou are ready! Type one of the commands above and press Enter.")
+    print("\nWelldone, now you know the commands, type one of the commands shown to start:")
 
 
     while True:
