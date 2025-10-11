@@ -24,7 +24,29 @@ from .robot_controller import RobotController
 def main():
     robot = RobotController("R-001")
     robot.start()
-    print("Commands: deliver <item> <from> <to>, monitor, greet <name>, status, undo, exit")
+    print("\nWelcome to the Humanoid Classroom Robot System!")
+    input("Press Enter to continue...")
+
+    print("\nThis robot can help you with classroom tasks like delivering items, monitoring the environment, and greeting students.")
+    input("Press Enter to see the commands...")
+
+    print(
+        "\nCommands:\n"
+        "  • deliver <item> from <source> to <destination>  - Ask the robot to deliver something\n"
+        "  • monitor                                        - Check classroom sensors\n"
+        "  • greet <name>                                  - Robot greets a student\n"
+        "  • status                                        - See what the robot is doing\n"
+        "  • undo                                          - Undo last action\n"
+        "  • exit                                          - Quit the program"
+)
+    input("Press Enter for an example command...")
+
+    print("\nExample: deliver book from teacher to student")
+    input("Press Enter to start using the robot...")
+
+    print("\nYou are ready! Type a command at the prompt '>' and press Enter.")
+
+
     while True:
         try:
             cmd = input("> ").strip()
