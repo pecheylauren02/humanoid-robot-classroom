@@ -29,7 +29,7 @@ class TaskManager:
             task (DeliveryTask): Task to enqueue.
         """
         self.task_queue.append(task)
-        print(f"[TaskManager] enqueued {task.id}")
+        # print(f"[TaskManager] enqueued {task.id}")
 
     def dequeue_task(self) -> Optional[DeliveryTask]:
         """
@@ -40,7 +40,7 @@ class TaskManager:
         """
         if self.task_queue:
             t = self.task_queue.popleft()
-            print(f"[TaskManager] dequeued {t.id}")
+            # print(f"[TaskManager] dequeued {t.id}")
             return t
         return None
 
@@ -53,7 +53,7 @@ class TaskManager:
         """
         task.mark_completed()
         self.completed.append(task.id)
-        print(f"[TaskManager] marked completed {task.id}")
+        # print(f"[TaskManager] marked completed {task.id}")
 
     def list_tasks(self) -> List[str]:
         """

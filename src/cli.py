@@ -84,8 +84,7 @@ def main():
             from_loc = parts[2]
             to_loc = " ".join(parts[3:])
             result = robot.deliver_material(item, from_loc, to_loc)
-            # Only show a human-friendly message
-            print(f"Delivered {item} from {from_loc} to {to_loc}." if result else f"Failed to deliver {item}.")
+            print(f"\nDELIVERED {item} from {from_loc} to {to_loc}." if result else f"FAILED TO DELIVER {item}.")
 
         elif verb == "monitor":
             res = robot.monitor_environment()
@@ -98,7 +97,7 @@ def main():
 
         elif verb == "greet" and len(parts) >= 2:
             name = " ".join(parts[1:])
-            print(f"Robot says: {robot.greet_student(name)}")
+            print(f"\nRobot says: {robot.greet_student(name)}")
 
         elif verb == "status":
             status = robot.get_status()

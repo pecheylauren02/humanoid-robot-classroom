@@ -90,7 +90,7 @@ class RobotController:
         """Greet a student by name."""
         self.change_state(RobotState.EXECUTING)
         msg = f"Hello, {name}!"
-        print(self.interaction.display_message(msg))
+        # print(self.interaction.display_message(msg))  # REMOVE this
         self.interaction.log_interaction("greet", name)
         self.history.append(("greet", name))
         self.change_state(RobotState.COMPLETED)
