@@ -49,19 +49,19 @@ def main():
     robot = RobotController("R-001")
     robot.start()
 
-    print("\nWelcome to the Humanoid Classroom Robot System!")
-    print("\nThis robot can help you with classroom tasks like delivering items, monitoring the environment, and greeting students.")
-    input("\nPress ENTER to see the commands...")
+    print("\nHello, Teacher! I am your Humanoid Classroom Robot, ready to assist you today.")
+    print("\nI can help with tasks like delivering items, monitoring classroom temperature, and greeting students.")
+    input("\nPress ENTER to see my command list...")
 
     print(COMMANDS_GUIDE)
 
-    print("Great! Now you can type a command to get started:\n")
+    print("All set! Type a command and I’ll get right to work:\n")
 
     while True:
         try:
             cmd = input("> ").strip()
         except (EOFError, KeyboardInterrupt):
-            print("\nExiting CLI. Goodbye!")
+            print("\nIt seems you’re leaving. Goodbye, Teacher!")
             break
 
         if not cmd:
@@ -71,15 +71,16 @@ def main():
         verb = parts[0].lower()
 
         if verb == "exit":
-            confirm = input("\nAre you sure you want to exit? (y/n): ").strip().lower()
+            confirm = input("\nTeacher, are you sure you want me to power down? (y/n): ").strip().lower()
             if confirm in ["y", "yes"]:
-                print("\nOkay, mission complete! The robot is taking a break. See you next time! 👋")
+                print("\nMission complete, Teacher! I’m going to recharge. See you next time! 🤖👋")
                 break
             else:
-                print("Exit cancelled. Back to the robot commands.")
+                print("\nPhew! I’m still here, ready for your next command.")
                 continue
 
         elif verb == "help":
+            print("\nHere’s what I can do for you, Teacher:")
             print(COMMANDS_GUIDE)
 
         elif verb == "deliver" and len(parts) >= 4:
@@ -87,44 +88,47 @@ def main():
             from_loc = parts[2]
             to_loc = " ".join(parts[3:])
             result = robot.deliver_material(item, from_loc, to_loc)
-            print(f"\nDELIVERED {item} from {from_loc} to {to_loc}." if result else f"FAILED TO DELIVER {item}.")
+            if "Delivered" in result:
+                print(f"\nAll done, Teacher! I successfully delivered {item} from {from_loc} to {to_loc}.")
+            else:
+                print(f"\nOops, Teacher! I couldn’t deliver {item}. Please check the locations and try again.")
 
         elif verb == "monitor":
             res = robot.monitor_environment()
             temp = res.get('temperature')
             issue = res.get('issue')
             if issue:
-                print(f"\nWARNING! Classroom temperature is {temp}°C — outside normal range.")
+                print(f"\nAlert, Teacher! The classroom temperature is {temp}°C — outside my safe range.")
             else:
-                print(f"\nClassroom temperature is {temp}°C. Everything is normal.")
+                print(f"\nThe classroom temperature is {temp}°C. Everything is normal for students to learn in optimal conditions!")
 
         elif verb == "greet" and len(parts) >= 2:
             name = " ".join(parts[1:])
-            print(f"\nRobot says: {robot.greet_student(name)}")
+            greeting = robot.greet_student(name)
+            print(f"\nAffirmative: {greeting}")
 
         elif verb == "status":
             status = robot.get_status()
-            # Display key info in readable form
-            tasks = status.get('tasks', [])
             state = status.get('state', 'unknown')
-            print(f"Robot state: {state}")
+            tasks = status.get('task_queue', [])
+            print(f"\nCurrent Status: {state}")
             if tasks:
-                print("Current tasks:")
+                print("Here are my pending tasks:")
                 for t in tasks:
                     print(f"  - {t}")
             else:
-                print("No current tasks.")
+                print("No pending tasks. I’m all clear!")
 
         elif verb == "undo":
             last = robot.interaction.undo_last()
             if last:
                 action, who = last
-                print(f"\nUndid last task: {action} for {who or 'robot'}")
+                print(f"\nTeacher, I undid my last action: {action} for {who or 'robot'}.")
             else:
-                print("\nNothing to undo.")
+                print("\nNothing to undo, Teacher. All is up to date!")
 
         else:
-            print("Oops! That command does not exist. Type 'help' to see a list of valid commands.")
+            print("\nOops, Teacher! I didn’t understand that command. Type 'help' to see what I can do.")
 
 if __name__ == "__main__":
     main()
