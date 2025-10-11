@@ -60,20 +60,20 @@ class InteractionModule:
         if self.verbose:
             print(f"[InteractionModule] logged: {action} {who or 'robot'}")
 
-    def undo_last(self) -> str:
+    def undo_last(self) -> tuple | None:
         """
         Undo the most recent logged action.
 
         Returns:
-            str: Friendly message describing what was undone.
+        tuple | None: (action, who) of the undone action, or None if nothing to undo.
         """
         if not self.undo_stack:
-            return "Nothing to undo."
+            return None
         action, who = self.undo_stack.pop()
         self.interaction_log.append(("undo", who))
         if self.verbose:
             print(f"[InteractionModule] undo: {action} {who or 'robot'}")
-        return f"Undid last action: {action} for {who or 'robot'}"
+        return (action, who)
 
     def get_log(self) -> List[Tuple[str, Optional[str]]]:
         """

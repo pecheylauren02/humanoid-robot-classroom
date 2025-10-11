@@ -113,8 +113,12 @@ def main():
                 print("No current tasks.")
 
         elif verb == "undo":
-            undone = robot.interaction.undo_last()
-            print(f"Undid last task: {undone}" if undone else "Nothing to undo.")
+            last = robot.interaction.undo_last()
+            if last:
+                action, who = last
+                print(f"\nUndid last task: {action} for {who or 'robot'}")
+            else:
+                print("\nNothing to undo.")
 
         else:
             print("Unknown or malformed command. Type 'help' to see available commands.")
