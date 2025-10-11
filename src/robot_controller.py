@@ -9,9 +9,7 @@ from typing import Dict, List, Tuple
 
 
 class RobotState(Enum):
-    """
-    Enumeration representing the various states of the humanoid robot.
-    """
+    """Enumeration representing the various states of the humanoid robot."""
     IDLE = auto()
     EXECUTING = auto()
     COMPLETED = auto()
@@ -20,71 +18,40 @@ class RobotState(Enum):
 
 
 class RobotController:
-    """
-    Controller class for managing the operations of a humanoid robot, 
-    including task execution, environmental monitoring, and interactions.
-    """
+    """Controller for managing humanoid robot operations."""
 
     def __init__(self, id_: str):
-        """
-        Initialize the robot controller.
-
-        Args:
-            id_ (str): Unique identifier for the robot.
-        """
+        """Initialize the robot controller."""
         self.id = id_
         self.state = RobotState.IDLE
-        self.task_manager = TaskManager("TM1")
+        self.task_manager = TaskManager("TM1")      # Removed verbose
         self.sensor = TemperatureSensor("S1")
-        self.interaction = InteractionModule("I1")
-        self.history: List[Tuple] = []  # records tuples like ('deliver', taskid)
+        self.interaction = InteractionModule("I1")  # Removed verbose
+        self.history: List[Tuple] = []
 
     def change_state(self, new_state: RobotState) -> None:
-        """
-        Change the robot's state and print a log message.
-
-        Args:
-            new_state (RobotState): The new state to transition to.
-        """
-        print(f"[RobotController] {self.state.name} -> {new_state.name}")
+        """Change the robot's state."""
         self.state = new_state
 
     def start(self) -> None:
-        """
-        Initialize the robot and display a ready message.
-        """
+        """Initialize the robot and display ready message."""
         self.change_state(RobotState.IDLE)
-        self.interaction.display_message("Robot ready.")
+        print(self.interaction.display_message("Robot ready."))
 
     def deliver_material(self, item: str, from_location: str, to_location: str) -> str:
-        """
-        Enqueue a delivery task and execute it immediately.
-
-        Args:
-            item (str): The item to be delivered.
-            from_location (str): The starting location of the item.
-            to_location (str): The destination location for delivery.
-
-        Returns:
-            str: Result of the task execution.
-        """
+        """Enqueue a delivery task and execute it."""
         task = DeliveryTask.create(item, from_location, to_location)
         self.task_manager.enqueue_task(task)
         return self.execute_task()
 
     def execute_task(self) -> str:
-        """
-        Execute the next task in the queue, simulating possible success or failure.
-
-        Returns:
-            str: Message indicating the outcome of the task.
-        """
+        """Execute the next task in the queue."""
         task = self.task_manager.dequeue_task()
         if not task:
-            return "No tasks."
+            return "No tasks to execute."
 
         self.change_state(RobotState.EXECUTING)
-        self.interaction.display_message(f"Executing delivery {task.item} -> {task.to_location}")
+        print(self.interaction.display_message(f"Executing delivery {task.item} -> {task.to_location}"))
 
         # Simulate success/failure
         success = random.choices([True, False], weights=[0.85, 0.15])[0]
@@ -101,24 +68,15 @@ class RobotController:
             self.interaction.log_interaction("deliver_failed", task.to_location)
             self.change_state(RobotState.ERROR)
             self.recover_from_error()
-            return f"Delivery {task.id} failed"
+            return f"Delivery {task.item} to {task.to_location} failed"
 
     def recover_from_error(self) -> None:
-        """
-        Attempt to recover from an error state and return the robot to idle.
-        """
-        print("[RobotController] attempting recovery")
+        """Recover from an error state."""
         self.change_state(RobotState.RECOVERING)
-        # Simple recovery logic — could requeue task or notify
         self.change_state(RobotState.IDLE)
 
     def monitor_environment(self) -> Dict:
-        """
-        Monitor environmental conditions via sensors.
-
-        Returns:
-            Dict: Dictionary containing temperature data and anomaly status.
-        """
+        """Monitor environmental conditions."""
         temp = self.sensor.read_data()
         anomaly = self.sensor.detect_anomaly()
         self.history.append(("monitor", temp))
@@ -129,18 +87,10 @@ class RobotController:
         return {"temperature": temp, "issue": False}
 
     def greet_student(self, name: str) -> str:
-        """
-        Greet a student by name and log the interaction.
-
-        Args:
-            name (str): Name of the student.
-
-        Returns:
-            str: Greeting message.
-        """
+        """Greet a student by name."""
         self.change_state(RobotState.EXECUTING)
         msg = f"Hello, {name}!"
-        self.interaction.display_message(msg)
+        print(self.interaction.display_message(msg))
         self.interaction.log_interaction("greet", name)
         self.history.append(("greet", name))
         self.change_state(RobotState.COMPLETED)
@@ -148,12 +98,7 @@ class RobotController:
         return msg
 
     def get_status(self) -> Dict:
-        """
-        Get the current status of the robot, including task queue, history, and logs.
-
-        Returns:
-            Dict: Current status of the robot.
-        """
+        """Get current robot status."""
         return {
             "id": self.id,
             "state": self.state.name,

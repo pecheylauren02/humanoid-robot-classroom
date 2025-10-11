@@ -9,12 +9,14 @@ Classes:
 
 Key Features:
     - Logging actions performed by or for the robot
-    - Displaying messages to users or the CLI
+    - Returning messages to display to users
     - Undoing the most recent interaction
     - Retrieving full interaction history
+    - Optional verbose/debug mode for developers
 """
 
 from typing import List, Tuple, Optional
+
 
 class InteractionModule:
     """
@@ -22,45 +24,62 @@ class InteractionModule:
 
     Attributes:
         id (str): Identifier for this interaction module instance.
-        interaction_log (List[Tuple[str, str]]): History of all actions.
-        undo_stack (List[Tuple[str, str]]): Stack for undoable actions.
+        interaction_log (List[Tuple[str, Optional[str]]]): History of all actions.
+        undo_stack (List[Tuple[str, Optional[str]]]): Stack for undoable actions.
+        verbose (bool): If True, prints debug messages for developers.
     """
-    def __init__(self, id_: str):
-        self.id = id_
-        self.interaction_log: List[Tuple[str, str]] = []
-        self.undo_stack: List[Tuple[str, str]] = []
 
-    def display_message(self, message: str) -> None:
+    def __init__(self, id_: str, verbose: bool = False):
+        self.id = id_
+        self.verbose = verbose
+        self.interaction_log: List[Tuple[str, Optional[str]]] = []
+        self.undo_stack: List[Tuple[str, Optional[str]]] = []
+
+    def display_message(self, message: str) -> str:
         """
-        Display a message from the robot.
+        Prepare a message from the robot to show to the user.
 
         Args:
-        message (str): Text message to display.
-        """
-        print(f"[Robot] {message}")
+            message (str): Text message.
 
-    def get_command(self) -> str:
-        # Placeholder for CLI integration — real CLI will call controller directly
-        return "noop"
-    
-    def log_interaction(self, action: str, who: str = "") -> None:
+        Returns:
+            str: Formatted message for display.
+        """
+        return f"Robot: {message}"
+
+    def log_interaction(self, action: str, who: Optional[str] = None) -> None:
+        """
+        Record an action in the logs and undo stack.
+
+        Args:
+            action (str): Description of the action.
+            who (Optional[str]): Who performed or received the action.
+        """
         self.interaction_log.append((action, who))
         self.undo_stack.append((action, who))
-        print(f"[InteractionModule] logged: {action} {who}")
+        if self.verbose:
+            print(f"[InteractionModule] logged: {action} {who or 'robot'}")
 
-    def undo_last(self) -> Optional[Tuple[str, str]]:
+    def undo_last(self) -> str:
         """
         Undo the most recent logged action.
 
         Returns:
-        Optional[Tuple[str, str]]: The undone action and associated actor, or None if no actions to undo.
+            str: Friendly message describing what was undone.
         """
         if not self.undo_stack:
-            return None
-        item = self.undo_stack.pop()
-        self.interaction_log.append(("undo", item[1]))
-        print(f"[InteractionModule] undo: {item}")
-        return item
+            return "Nothing to undo."
+        action, who = self.undo_stack.pop()
+        self.interaction_log.append(("undo", who))
+        if self.verbose:
+            print(f"[InteractionModule] undo: {action} {who or 'robot'}")
+        return f"Undid last action: {action} for {who or 'robot'}"
 
-    def get_log(self) -> List[Tuple[str, str]]:
-        return list(self.interaction_log)
+    def get_log(self) -> List[Tuple[str, Optional[str]]]:
+        """
+        Retrieve the interaction log.
+
+        Returns:
+            List[Tuple[str, Optional[str]]]: Copy of all logged interactions.
+        """
+        return self.interaction_log.copy()
