@@ -25,3 +25,20 @@ The system simulates a classroom robot capable of receiving and executing delive
 These components are designed to reflect the modular structure and flow identified in the UML diagrams, ensuring a strong correspondence between design and implementation.
 
 ---
+
+## 3. Object-Oriented Design and Data Structures
+
+The program applies object-oriented design techniques and uses data structures effectively to manage operational data.
+
+### Object-Oriented Features:
+- **Encapsulation:** Each class maintains its own internal data and exposes methods for controlled access.
+- **Inheritance:** Shared behaviours are structured in base classes, allowing specialized extensions in subclasses.
+- **Polymorphism:** Common methods such as `execute()` are overridden by different task types to achieve unique actions.
+- **Abstraction:** The main control logic is separated from task definitions, improving modularity and code reuse.
+
+### Data Structures:
+- **Lists (Queues):** Used to manage pending tasks efficiently.  
+- **Dictionaries:** Store and manage attributes of delivery tasks (sender, receiver, and item).  
+- **Strings and UUIDs:** Used to generate unique task identifiers for logging and tracking.  
+
+---
