@@ -91,7 +91,7 @@ def main():
             if "Delivered" in result:
                 print(f"\nAll done, Teacher! I successfully delivered {item} from {from_loc} to {to_loc}.")
             else:
-                print(f"\nOops, Teacher! I couldn’t deliver {item}. Please check the locations and try again.")
+                print(f"\nOops! I couldn’t deliver {item}. Please check the locations and try again.")
 
         elif verb == "monitor":
             res = robot.monitor_environment()
