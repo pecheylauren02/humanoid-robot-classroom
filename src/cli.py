@@ -92,9 +92,9 @@ def main():
             temp = res.get('temperature')
             issue = res.get('issue')
             if issue:
-                print(f"Warning! Classroom temperature is {temp}°C — outside normal range.")
+                print(f"\nWARNING! Classroom temperature is {temp}°C — outside normal range.")
             else:
-                print(f"Classroom temperature is {temp}°C. Everything is normal.")
+                print(f"\nClassroom temperature is {temp}°C. Everything is normal.")
 
         elif verb == "greet" and len(parts) >= 2:
             name = " ".join(parts[1:])

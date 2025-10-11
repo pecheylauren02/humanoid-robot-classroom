@@ -26,16 +26,8 @@ class TemperatureSensor(Sensor):
         self.history: List[float] = [baseline]
 
     def read_data(self) -> float:
-        """Generate the next temperature reading and print a teacher-friendly message."""
         next_val = round(self.history[-1] + random.uniform(-1.0, 1.0), 2)
         self.history.append(next_val)
-
-        # Teacher-friendly output
-        if next_val < 18.0 or next_val > 28.0:
-            print(f"Warning! Classroom temperature is {next_val}°C — outside normal range.")
-        else:
-            print(f"Classroom temperature is {next_val}°C. Everything is normal.")
-
         return next_val
 
     def detect_anomaly(self, low: float = 18.0, high: float = 28.0) -> bool:
