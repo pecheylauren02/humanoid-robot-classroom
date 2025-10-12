@@ -1,8 +1,8 @@
 """
 Humanoid Classroom Robot System
 ---------------------------------
-This implementation reflects the UML Class, Sequence, and Activity Diagrams 
-for the Humanoid Classroom Robot System. 
+This implementation reflects the UML Class, Sequence, and Activity Diagrams
+for the Humanoid Classroom Robot System.
 
 Classes:
     - RobotController
@@ -19,7 +19,6 @@ Key Features:
     - Task log viewing
 """
 
-import json
 from .robot_controller import RobotController
 
 COMMANDS_GUIDE = """
@@ -52,18 +51,19 @@ Commands Guide:
 Type 'help' anytime to see this guide again.
 """
 
+
 def main():
     robot = RobotController("R-001")
     robot.start()
 
     print("\n🤖 Hello, Teacher! I am your Humanoid Classroom Robot, ready to assist you today.")
-    
+
     teacher_name = input("\nBefore we begin, please tell me your name, Teacher: ").strip().title()
     if not teacher_name:
         teacher_name = "Teacher"
     print(f"\nWonderful to meet you, {teacher_name}! I am fully operational and eager to help in your classroom.")
     print("\nI can assist with tasks like delivering items, monitoring classroom temperature, and greeting students.")
-    
+
     input("\nPress ENTER to see my command list...")
 
     print(COMMANDS_GUIDE)
@@ -88,11 +88,11 @@ def main():
                 print(f"\nMission complete, {teacher_name}! I’m going to recharge. See you next time! 🤖⚡")
                 break
             else:
-                print(f"\nPhew! I’m still here. Ready for your next command!")
+                print(f"\nPhew! I am still here. Ready for your next command!")
                 continue
 
         elif verb == "help":
-            print(f"\nHere’s what I can do for you, {teacher_name}:")
+            print(f"\nHere is what I can do for you, {teacher_name}:")
             print(COMMANDS_GUIDE)
 
         elif verb == "deliver" and "from" in parts and "to" in parts:
@@ -105,7 +105,7 @@ def main():
             if "Delivered" in result:
                 print(f"\nAll done, {teacher_name}! I successfully delivered {item} from {from_loc} to {to_loc}. 📦✅\n")
             else:
-                print(f"\nOops, {teacher_name}! I couldn’t deliver {item}. Please check the locations and try again.\n")
+                print(f"\nOops, {teacher_name}! I could not deliver {item}. Please check the locations and try again.\n")
 
         elif verb == "monitor":
             res = robot.monitor_environment()
@@ -131,7 +131,7 @@ def main():
                 for t in tasks:
                     print(f"  - {t}")
             else:
-                print("\nNo pending tasks. I’m all clear and ready for the next instruction!\n")
+                print("\nNo pending tasks. I am all clear and ready for the next instruction!\n")
 
         elif verb == "undo":
             last = robot.interaction.undo_last()
@@ -162,7 +162,7 @@ def main():
             print("--------------------------\n")
 
         else:
-            print(f"\nOops! I didn’t understand that command. Type 'help' to see what I can do.\n")
+            print(f"\nOops! I did not understand that command. Type 'help' to see what I can do.\n")
 
 
 if __name__ == "__main__":
