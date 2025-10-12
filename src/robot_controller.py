@@ -6,6 +6,7 @@ from .interaction import InteractionModule
 from .tasks import DeliveryTask
 import random
 from typing import Dict, List, Tuple
+from datetime import datetime
 
 
 class RobotState(Enum):
@@ -28,6 +29,7 @@ class RobotController:
         self.sensor = TemperatureSensor("S1")
         self.interaction = InteractionModule("I1")  # Removed verbose
         self.history: List[Tuple] = []
+        self.task_log: List[str] = []
 
     def change_state(self, new_state: RobotState) -> None:
         """Change the robot's state."""
@@ -61,14 +63,17 @@ class RobotController:
             self.interaction.log_interaction("deliver", task.to_location)
             self.change_state(RobotState.COMPLETED)
             self.change_state(RobotState.IDLE)
-            return f"Delivered {task.item} to {task.to_location}"
+             # NEW: log the task with timestamp
+            self.task_log.append(f"{datetime.now()}: Delivered {task.item} to {task.to_location}")
+            # return f"Delivered {task.item} to {task.to_location}"
         else:
             task.mark_failed()
             self.history.append(("deliver_failed", task.id))
             self.interaction.log_interaction("deliver_failed", task.to_location)
             self.change_state(RobotState.ERROR)
             self.recover_from_error()
-            return f"Delivery {task.item} to {task.to_location} failed"
+            self.task_log.append(f"{datetime.now()}: Failed to deliver {task.item} to {task.to_location}")
+            #return f"Delivery {task.item} to {task.to_location} failed"
 
     def recover_from_error(self) -> None:
         """Recover from an error state."""
@@ -82,20 +87,28 @@ class RobotController:
         self.history.append(("monitor", temp))
         if anomaly:
             self.interaction.log_interaction("temperature_anomaly", str(temp))
+            # --- LOG IT ---
+            self.task_log.append(f"{datetime.now()}: Temperature anomaly detected: {temp}°C")
             return {"temperature": temp, "issue": True}
+
         self.interaction.log_interaction("temperature_ok", str(temp))
+        # --- LOG IT ---
+        self.task_log.append(f"{datetime.now()}: Temperature checked: {temp}°C")
         return {"temperature": temp, "issue": False}
+
 
     def greet_student(self, name: str) -> str:
         """Greet a student by name."""
         self.change_state(RobotState.EXECUTING)
         msg = f"Hello, {name}!"
-        # print(self.interaction.display_message(msg))  # REMOVE this
         self.interaction.log_interaction("greet", name)
         self.history.append(("greet", name))
+        # --- LOG IT ---
+        self.task_log.append(f"{datetime.now()}: Greeted student {name}")
         self.change_state(RobotState.COMPLETED)
         self.change_state(RobotState.IDLE)
         return msg
+    
 
     def get_status(self) -> Dict:
         """Get current robot status."""

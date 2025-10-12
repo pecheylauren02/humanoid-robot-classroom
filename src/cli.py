@@ -16,6 +16,7 @@ Key Features:
     - Temperature monitoring and anomaly detection
     - Interaction logging and greetings
     - State transitions for the RobotController
+    - Task log viewing
 """
 
 import json
@@ -39,7 +40,13 @@ Commands Guide:
 5. Undo the last task the robot did
    Command: undo
 
-6. Quit the program
+6. View recent robot tasks
+   Command: view log
+
+7. View all robot tasks
+   Command: view full log
+
+8. Quit the program
    Command: exit
 
 Type 'help' anytime to see this guide again.
@@ -88,29 +95,31 @@ def main():
             print(f"\nHere’s what I can do for you, {teacher_name}:")
             print(COMMANDS_GUIDE)
 
-        elif verb == "deliver" and len(parts) >= 4:
+        elif verb == "deliver" and "from" in parts and "to" in parts:
+            from_index = parts.index("from") + 1
+            to_index = parts.index("to")
             item = parts[1]
-            from_loc = parts[2]
-            to_loc = " ".join(parts[3:])
+            from_loc = " ".join(parts[from_index:to_index])
+            to_loc = " ".join(parts[to_index + 1:])
             result = robot.deliver_material(item, from_loc, to_loc)
             if "Delivered" in result:
-                print(f"\nAll done, {teacher_name}! I successfully delivered {item} from {from_loc} to {to_loc}. 📦✅")
+                print(f"\nAll done, {teacher_name}! I successfully delivered {item} from {from_loc} to {to_loc}. 📦✅\n")
             else:
-                print(f"\nOops, {teacher_name}! I couldn’t deliver {item}. Please check the locations and try again.")
+                print(f"\nOops, {teacher_name}! I couldn’t deliver {item}. Please check the locations and try again.\n")
 
         elif verb == "monitor":
             res = robot.monitor_environment()
             temp = res.get('temperature')
             issue = res.get('issue')
             if issue:
-                print(f"\n⚠️ Alert, {teacher_name}! The classroom temperature is {temp}°C — outside my safe range.")
+                print(f"\n⚠️ Alert, {teacher_name}! The classroom temperature is {temp}°C — outside my safe range.\n")
             else:
-                print(f"\nThe classroom temperature is {temp}°C. Everything is optimal for learning, {teacher_name}!")
+                print(f"\nThe classroom temperature is {temp}°C. Everything is optimal for learning, {teacher_name}!\n")
 
         elif verb == "greet" and len(parts) >= 2:
             name = " ".join(parts[1:])
             greeting = robot.greet_student(name)
-            print(f"\nAffirmative, {teacher_name}: {greeting}")
+            print(f"\nAbsolutely: {greeting}")
 
         elif verb == "status":
             status = robot.get_status()
@@ -122,7 +131,7 @@ def main():
                 for t in tasks:
                     print(f"  - {t}")
             else:
-                print("No pending tasks. I’m all clear and ready for the next instruction!")
+                print("\nNo pending tasks. I’m all clear and ready for the next instruction!\n")
 
         elif verb == "undo":
             last = robot.interaction.undo_last()
@@ -130,10 +139,31 @@ def main():
                 action, who = last
                 print(f"\n{teacher_name}, I undid my last action: {action} for {who or 'robot'}.")
             else:
-                print(f"\nNothing to undo right now, {teacher_name}. Everything’s up to date!")
+                print(f"\nNothing to undo right now, {teacher_name}. Everything’s up to date!\n")
+
+        # --- NEW: View recent task log ---
+        elif verb == "view" and len(parts) >= 2 and parts[1].lower() == "log":
+            print("\n--- Last 5 Robot Tasks ---")
+            if robot.task_log:
+                for entry in robot.task_log[-5:]:
+                    print(entry)
+            else:
+                print("No tasks logged yet.")
+            print("-------------------------\n")
+
+        # --- NEW: View full task log ---
+        elif verb == "view" and len(parts) >= 3 and parts[1].lower() == "full" and parts[2].lower() == "log":
+            print("\n--- Full Robot Task Log ---")
+            if robot.task_log:
+                for entry in robot.task_log:
+                    print(entry)
+            else:
+                print("No tasks logged yet.")
+            print("--------------------------\n")
 
         else:
-            print(f"\nOops! I didn’t understand that command. Type 'help' to see what I can do.")
+            print(f"\nOops! I didn’t understand that command. Type 'help' to see what I can do.\n")
+
 
 if __name__ == "__main__":
     main()
