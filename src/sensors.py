@@ -37,3 +37,4 @@ class TemperatureSensor(Sensor):
 
     def get_history(self) -> List[float]:
         return list(self.history)
+
