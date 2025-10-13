@@ -8,8 +8,11 @@ packaging==25.0
 platformdirs==4.4.0
 pluggy==1.6.0
 pycodestyle==2.14.0
+pydocstyle==6.3.0
 pyflakes==3.4.0
 Pygments==2.19.2
+pylama==8.4.1
 pylint==3.3.8
 pytest==8.4.2
+snowballstemmer==3.0.1
 tomlkit==0.13.3
