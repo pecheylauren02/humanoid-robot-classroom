@@ -74,7 +74,60 @@ Object-oriented programming (OOP) principles guided the development process. Enc
 Efficient data management was central to the system’s functionality. Queues were implemented using Python lists to manage pending tasks sequentially, ensuring first-in-first-out execution. Dictionaries stored task attributes such as sender, recipient, and item type, allowing fast access during processing. Unique task identifiers were generated with UUIDs to support logging and tracking. These structures allowed the robot to handle multiple tasks without data conflicts or errors, simulating realistic classroom workflow.
 
 ### 5.5 Testing Strategy
-Testing was an integral part of development. Python’s `assert` statements were used to verify the correctness of key functions, including task creation, queue management, and state transitions. Manual testing involved executing sample commands to simulate classroom scenarios, checking that tasks were executed in order and that console feedback was accurate. Testing revealed minor issues with task parsing and state updates, which were corrected through iterative improvements. This process reinforced the importance of systematic testing in reliable software development.
+
+Both Automated and Unit testing were carried out using Python’s built-in `unittest` framework, with fake classes used to simulate dependencies for deterministic and isolated testing. The tests cover:
+
+- Task delivery (including success, failure, and forbidden items)  
+- State transitions of the robot (IDLE, EXECUTING, COMPLETED, ERROR, RECOVERING)  
+- Environment monitoring and anomaly detection  
+- Student greeting and interaction logging  
+- Status reporting and task queue management  
+
+Automated tests and static code analysis were conducted to ensure both **functional correctness** and **code quality** of the Humanoid Classroom Robot System. Manual Testing was also conducted to ensure thorough analysis.
+
+#### 5.5.1 Summary Table of Test and Analysis Results
+
+| Feature / Tool                     | Description                                                      | Result |
+|-----------------------------------|------------------------------------------------------------------|--------|
+| Initial state verification         | Robot starts in IDLE state with empty logs and history           | ✅ Pass |
+| Forbidden item delivery            | Robot rejects unsafe/too large items and logs rejection          | ✅ Pass |
+| Normal delivery (success)          | Task executed successfully; correct state transitions            | ✅ Pass |
+| Normal delivery (failure/recovery)| Task failure simulated; robot recovers to IDLE; logs updated     | ✅ Pass |
+| Monitor environment                | Temperature readings and anomaly detection logged properly       | ✅ Pass |
+| Greet student and log interaction  | Greeting messages generated; interaction logged; temp considered | ✅ Pass |
+| Status report structure            | Status dictionary correctly includes state, history, queue, logs, temperature | ✅ Pass |
+| **Pylint**                         | Checked coding standards, errors, and refactoring suggestions    | ✅ Pass |
+| **Flake8**                         | Verified PEP-8 compliance and style issues                       | ✅ Pass |
+| **Pycodestyle**                     | Confirmed consistent code formatting                              | ✅ Pass |
+| **Pyflakes**                        | Static analysis for syntax and error detection                    | ✅ Pass |
+| **Pydocstyle**                       | Verified proper docstring formatting                               | ✅ Pass |
+
+#### 5.5.2 Test Result Screenshots
+
+<details> <summary>Pylint Results</summary>
+
+Screenshot: Console output of unit tests
+
+</details>
+
+<details> <summary>Unit Test Results</summary>
+
+Screenshot: Console output of all unit tests
+
+</details>
+
+<details> <summary>Flake8 Results</summary>
+
+Screenshot: Console output of flake8 before and after
+
+</details>
+
+<details> <summary>Pycodestyle Results</summary>
+
+Screenshot: Console output of pycodestyle
+
+</details>
+
 
 ### 5.6 Challenges and Lessons Learned
 Several challenges emerged during development. Mapping abstract diagrams into concrete Python classes required careful planning to ensure interactions were accurately represented. Designing the interaction module to provide realistic dialogue without overcomplicating the logic also demanded thoughtful design choices. These challenges were valuable learning experiences, emphasizing modularity, planning, and iterative refinement. Overall, the project strengthened my understanding of OOP, Python programming, and effective software design.
