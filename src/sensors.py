@@ -38,14 +38,14 @@ class TemperatureSensor(Sensor):
             self.temperature = round(self.history[-1] + random.uniform(-1.0, 1.0), 2)
 
         self.history.append(self.temperature)
-        print(f"[Sensor] Current temperature: {self.temperature}°C")
+        print(f"\n[Sensor] Current temperature: {self.temperature}°C\n")
         return self.temperature
 
     def detect_anomaly(self, low: float = 18.0, high: float = 28.0) -> bool:
         """Check if the latest temperature reading is outside the safe range."""
         latest = self.history[-1]
         if latest < low:
-            print(f"[Warning] It's too cold! Current temperature: {latest}°C ❄️")
+            print(f"\n[Warning] It's too cold! Current temperature: {latest}°C ❄️")
             print("Please close the windows or adjust the heating.")
             return True
         elif latest > high:

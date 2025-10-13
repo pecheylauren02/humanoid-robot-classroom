@@ -85,10 +85,10 @@ def main():
         if verb == "exit":
             confirm = input(f"\n{teacher_name}, are you sure you want me to power down? (y/n): ").strip().lower()
             if confirm in ["y", "yes"]:
-                print(f"\nMission complete, {teacher_name}! I’m going to recharge. See you next time! 🤖⚡")
+                print(f"\nMission complete, {teacher_name}! I’m going to recharge. See you next time! 🤖⚡\n")
                 break
             else:
-                print(f"\nPhew! I am still here. Ready for your next command!")
+                print(f"\nPhew! I am still here. Ready for your next command!\n")
                 continue
 
         elif verb == "help":
