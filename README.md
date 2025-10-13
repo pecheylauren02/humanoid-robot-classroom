@@ -17,13 +17,7 @@ The Humanoid Classroom Robot System is a Python-based implementation designed to
 
 Handling errors such as failed deliveries or sensor anomalies
 
-This implementation is based on UML diagrams (Class, Sequence, Activity, and State Transition) prepared in Unit 7. Any modifications from the original design were made to improve system efficiency and incorporate feedback received during the design phase.
-
----
-
-## 2. System Overview
-
-The system simulates a classroom robot capable of receiving and executing delivery tasks while maintaining interaction with its environment.  
+This implementation is based on UML diagrams (Class, Sequence, Activity, and State Transition) prepared in Unit 7. Any modifications from the original design were made to improve system efficiency and incorporate feedback received during the design phase.  
 
 ### Key Classes:
 
@@ -135,27 +129,36 @@ Automated tests and static code analysis were conducted to ensure both **functio
 #### 5.5.2 Test Result Screenshots
 
 <details> <summary>Pylint Results</summary>
+**Figure 1:** Pylint output showing code quality metrics.
 
-Screenshot: Console output of unit tests
-
+<img src="docs/test/pylint.png">
 </details>
 
 <details> <summary>Unit Test Results</summary>
+**Figure 2-5:** Unit Test output showing all four modules.
 
-Screenshot: Console output of all unit tests
-
+<img src="docs/test/unit_test_robot_controller.png">
+<img src="docs/test/unit_test_sensors.png">
+<img src="docs/test/unit_test_task_manager.png">
+<img src="docs/test/unit_test_tasks.png">
 </details>
 
 <details> <summary>Flake8 Results</summary>
+**Figure 6:** flake8 output BEFORE errors were corrected.
+<img src="docs/test/flake8_src_before.png">
 
-Screenshot: Console output of flake8 before and after
-
+**Figure 7:** flake8 output AFTER errors were corrected.
+<img src="docs/test/flake8_after.png">
 </details>
 
 <details> <summary>Pycodestyle Results</summary>
+**Figure 8:** Pycodestyle output showing code style metrics.
+<img src="docs/test/pycodestyle.png">
+</details>
 
-Screenshot: Console output of pycodestyle
-
+<details> <summary>Pyflakes Results</summary>
+**Figure 9:** Pyflakes output showing code quality metrics.
+<img src="docs/test/pyflakes.png">
 </details>
 
 ### 5.6 Challenges and Lessons Learned
