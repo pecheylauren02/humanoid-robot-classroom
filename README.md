@@ -41,7 +41,7 @@ Software engineering highlights that applying core object-oriented principles im
 
 - **Encapsulation:** Each class maintains its own internal data and exposes methods for controlled access.
 - **Inheritance:** Shared behaviours are structured in base classes, allowing specialized extensions in subclasses.
-- **Polymorphism:** Common methods such as `execute()` are overridden by different task types to achieve unique actions.
+- **Polymorphism:** Common methods such as execute() are overridden by different task types to achieve unique actions.
 - **Abstraction:** The main control logic is separated from task definitions, improving modularity and code reuse.
 
 ### Data Structures:
@@ -83,14 +83,14 @@ The robot will interpret this command, enqueue the delivery task, and execute it
 
 | Command | Description |
 |---------|-------------|
-| `deliver <item> from <source> to <destination>` | Instructs the robot to deliver an item. Failed deliveries are logged and retried if possible. |
-| `monitor` | Checks classroom temperature and alerts if anomalies are detected. |
-| `greet <name>` | Robot greets a student with personalized messages. |
-| `status` | Displays the robot’s current state (idle, executing, paused). |
-| `undo` | Reverts the last executed task. |
-| `view log` | Shows recent robot tasks with timestamps and status. |
-| `view full log` | Displays the full history of executed tasks. |
-| `exit` | Safely terminates the program and saves logs. |
+| deliver <item> from <source> to <destination> | Instructs the robot to deliver an item. Failed deliveries are logged and retried if possible. |
+| monitor | Checks classroom temperature and alerts if anomalies are detected. |
+| greet <name> | Robot greets a student with personalized messages. |
+| status | Displays the robot’s current state (idle, executing, paused). |
+| undo | Reverts the last executed task. |
+| view log | Shows recent robot tasks with timestamps and status. |
+| view full log | Displays the full history of executed tasks. |
+| exit | Safely terminates the program and saves logs. |
 
 ### 5.1 Error Handling
 
@@ -120,7 +120,7 @@ Efficient data management was integral to the Humanoid Classroom Robot’s funct
 
 ### 6.5 Testing Strategy
 
-Both Automated and Unit testing were carried out using Python’s built-in `unittest` framework, with fake classes used to simulate dependencies for deterministic and isolated testing. The tests cover:
+Both Automated and Unit testing were carried out using Python’s built-in unittest framework, with fake classes used to simulate dependencies for deterministic and isolated testing. The tests cover:
 
 - Task delivery (including success, failure, and forbidden items)  
 - State transitions of the robot (IDLE, EXECUTING, COMPLETED, ERROR, RECOVERING)  
