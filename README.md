@@ -33,7 +33,7 @@ The system simulates a classroom robot capable of receiving and executing delive
 - **SensorModule:** Simulates environmental awareness and obstacle detection.  
 - **InteractionModule:** Facilitates communication between the robot and classroom users, ensuring simulated dialogue.  
 
-These components are designed to reflect the modular structure and flow identified in the UML diagrams, ensuring a strong correspondence between design and implementation.
+These components are designed to reflect the modular structure and flow identified in the UML diagrams, ensuring a strong correspondence between design and implementation (Bennett et al., 2021).
 
 ---
 
@@ -42,6 +42,8 @@ These components are designed to reflect the modular structure and flow identifi
 The program applies object-oriented design techniques and uses data structures effectively to manage operational data.
 
 ### Object-Oriented Features:
+
+Software engineering highlights that applying core object-oriented principles improves maintainability, scalability, and reduces the risk of errors in complex systems.
 
 - **Encapsulation:** Each class maintains its own internal data and exposes methods for controlled access.
 - **Inheritance:** Shared behaviours are structured in base classes, allowing specialized extensions in subclasses.
@@ -76,7 +78,7 @@ This section describes how to set up, run, and interact with the Humanoid Classr
     pip install -r requirements.txt
 
 5. Run the program: 
-    python main.py
+    python3 -m src.cli
 
 6. Enter a sample command such as:
     deliver book from teacher to student
@@ -87,19 +89,19 @@ The robot will interpret this command, enqueue the delivery task, and execute it
 
 ### 5.1 Project Objectives and Alignment with Design
 
-The implementation of the Humanoid Classroom Robot System reflects both the UML diagrams developed in Unit 7 and the iterative development process I followed during coding and testing. The primary objective was to translate the class, sequence, activity, and state transition diagrams into a functional Python program that simulates a classroom robot capable of receiving, queuing, and executing delivery tasks while interacting with teachers and students. The implementation also considered feedback received on the original design, leading to minor adjustments in task handling and interaction features.
+The implementation of the Humanoid Classroom Robot System reflects both the UML diagrams developed in Unit 7 and the iterative development process I followed during coding and testing. The primary objective was to translate the class, sequence, activity, and state transition diagrams into a functional Python program that simulates a classroom robot capable of receiving, queuing, and executing delivery tasks while interacting with teachers and students. The implementation also considered feedback received on the original design, leading to minor adjustments in task handling and interaction features (Lott & Phillips, 2021).
 
 ### 5.2 Modular Design and Class Responsibilities
 
-From the outset, I prioritized a modular structure to ensure that each class had a clear, single responsibility. The `RobotController` manages robot states and orchestrates operations, while the `TaskManager` handles task creation, queuing, and dispatch. `DeliveryTask` defines the attributes of each delivery operation, including sender, recipient, and object. The `SensorModule` and `InteractionModule` simulate environmental awareness and classroom communication, respectively. This separation of concerns enabled easier debugging and more targeted testing, as errors could be traced to specific components rather than the system as a whole.
+From the outset, a modular architecture was deliberately adopted to ensure that each class adhered to a well-defined, single responsibility (Lott & Phillips, 2021). The RobotController is responsible for managing the robot’s operational states and coordinating overall system behaviour, whereas the TaskManager oversees task creation, queuing, and dispatch. The DeliveryTask class encapsulates the attributes of individual delivery operations, including sender, recipient, and item details. Additionally, the SensorModule and InteractionModule simulate environmental perception and classroom communication, respectively. This clear separation of concerns facilitated more efficient debugging and targeted testing, as faults could be systematically traced to discrete components rather than the system in its entirety (Mishra et al., 2021).
 
 ### 5.3 Application of Object-Oriented Principles
 
-Object-oriented programming (OOP) principles guided the development process. Encapsulation ensured that each class maintained its own data and exposed controlled methods for access. Inheritance allowed shared behaviors to be structured in base classes and extended in subclasses for specialized functionality. Polymorphism was applied in task execution; for example, the `execute()` method is overridden by different task types to perform unique actions. Abstraction separated control logic from task definitions, improving modularity, code reuse, and maintainability. These principles ensured the code closely reflected the original design while remaining flexible for future enhancements.
+The development process was guided by foundational object-oriented programming (OOP) principles (Rumbaugh et al., 1999). Encapsulation ensured that each class maintained its own internal state while providing controlled access through well-defined methods (Singh et al., 2021). Inheritance facilitated the organization of shared behaviours within base classes, which could be extended by subclasses to provide specialized functionality (Singh et al., 2021). Polymorphism was employed in task execution, whereby methods such as execute() were overridden by different task types to perform distinct operations (Mishra et al., 2021). Abstraction was used to separate the system’s control logic from task definitions, thereby enhancing modularity, promoting code reuse, and supporting maintainability (Rumbaugh et al., 1999). Collectively, these principles ensured that the implementation remained faithful to the original design while preserving flexibility for future extension and adaptation.
 
 ### 5.4 Data Structures and Task Management
 
-Efficient data management was central to the system’s functionality. Queues were implemented using Python lists to manage pending tasks sequentially, ensuring first-in-first-out execution. Dictionaries stored task attributes such as sender, recipient, and item type, allowing fast access during processing. Unique task identifiers were generated with UUIDs to support logging and tracking. These structures allowed the robot to handle multiple tasks without data conflicts or errors, simulating realistic classroom workflow.
+Efficient data management was integral to the system’s overall functionality. Queues were implemented using Python lists to manage pending tasks in a sequential, first-in-first-out manner, ensuring orderly execution. Dictionaries were employed to store task attributes, including sender, recipient, and item type, thereby enabling rapid access and processing. Unique task identifiers were generated using UUIDs to facilitate precise logging and tracking of operations. Collectively, these data structures enabled the robot to manage multiple concurrent tasks without conflicts or errors, effectively simulating the operational dynamics of a real-world classroom environment (Ackerman, 2023).
 
 ### 5.5 Testing Strategy
 
@@ -158,12 +160,29 @@ Screenshot: Console output of pycodestyle
 
 ### 5.6 Challenges and Lessons Learned
 
-Several challenges emerged during development. Mapping abstract diagrams into concrete Python classes required careful planning to ensure interactions were accurately represented. Designing the interaction module to provide realistic dialogue without overcomplicating the logic also demanded thoughtful design choices. These challenges were valuable learning experiences, emphasizing modularity, planning, and iterative refinement. Overall, the project strengthened my understanding of OOP, Python programming, and effective software design.
+Several challenges were encountered during the development process. Translating abstract UML diagrams into concrete Python classes necessitated meticulous planning to ensure that inter-class interactions were accurately represented (Singh et al., 2021). The design of the interaction module, intended to simulate realistic classroom dialogue without introducing unnecessary complexity, required careful consideration of both functionality and maintainability. These challenges provided valuable learning opportunities, highlighting the importance of modularity, systematic planning, and iterative refinement (Mishra et al., 2021). Overall, the project substantially enhanced my understanding of object-oriented programming, Python development, and principles of effective software design.
 
 ### 5.7 Future Enhancements
 
-Future improvements could include adding additional task types, incorporating more advanced sensor simulations, or developing a graphical interface for more intuitive user interaction. These enhancements would increase the system’s realism and functionality while continuing to adhere to OOP principles.
+Future improvements could include adding additional task types, incorporating more advanced sensor simulations, or developing a graphical interface for more intuitive user interaction. These enhancements would increase the system’s realism and functionality while continuing to adhere to OOP principles (Ackerman, 2023).
 
 ### 5.8 Conclusion
 
 This project successfully demonstrates the integration of theoretical design with practical Python programming. It highlights modular software design, effective use of data structures, and systematic testing, while providing a working simulation of a humanoid classroom robot. The development process offered opportunities for reflection and learning, documented here to provide insight into the approach and challenges encountered during implementation.
+
+### 6. References
+
+- Bennett, S., McRobb, S., & Farmer, R. (2021) Object-Oriented Systems Analysis and
+Design Using UML. London: McGraw-Hill Higher Education.
+- Lott, S., & Phillips, D. (2021) Python Object-Oriented Programming: Build Robust and
+Maintainable Object-Oriented Python Applications and Libraries. 4th ed. Birmingham,
+UK: Packt Publishing.
+- Mishra, D., Parish, K., Lugo, R., & Wang, H. (2021) A framework for using humanoid
+robots in the school learning environment. Electronics 10(6): 1-12. DOI: https://
+doi.org/10.3390/electronics10060756
+- Rumbaugh, J., Jacobson, I., & Booch, G. (1999) The Unified Modeling Language
+Reference Manual. 2nd ed. Addison-Wesley.
+- Singh, N., Chouhan, S. S., & Verma, K. (2021). Object oriented programming: Concepts,
+limitations and application trends. 2021 5th International Conference on Information
+Systems and Computer Networks (ISCON), Mathura, India, 1-4. DOI: https://doi.org/
+10.1109/ISCON52037.2021.9702463
