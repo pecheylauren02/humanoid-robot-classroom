@@ -102,10 +102,19 @@ def main():
             from_loc = " ".join(parts[from_index:to_index])
             to_loc = " ".join(parts[to_index + 1:])
             result = robot.deliver_material(item, from_loc, to_loc)
+
+            # --- Updated delivery feedback logic ---
             if "Delivered" in result:
                 print(f"\nAll done, {teacher_name}! I successfully delivered {item} from {from_loc} to {to_loc}. 📦✅\n")
+            elif "cannot deliver" in result:
+                # Forbidden item
+                print(f"\nWarning, {teacher_name}! {result}\n")
+            elif "failed" in result:
+                # Random failure with reason
+                print(f"\nOops, {teacher_name}! {result}\n")
             else:
-                print(f"\nOops, {teacher_name}! I could not deliver {item}. Please check the locations and try again.\n")
+                # General fallback (should rarely happen)
+                print(f"\nHmm, something unexpected happened with that delivery, {teacher_name}. Let's try again.\n")
 
         elif verb == "monitor":
             res = robot.monitor_environment()
@@ -119,7 +128,7 @@ def main():
         elif verb == "greet" and len(parts) >= 2:
             name = " ".join(parts[1:])
             greeting = robot.greet_student(name)
-            print(f"\nAbsolutely: {greeting}")
+            print(f"\nAbsolutely: {greeting}\n")
 
         elif verb == "status":
             status = robot.get_status()
