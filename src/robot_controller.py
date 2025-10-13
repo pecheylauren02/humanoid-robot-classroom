@@ -10,15 +10,15 @@ from datetime import datetime
 # List of objects the robot cannot deliver
 FORBIDDEN_ITEMS = [
     "piano",
-    "grand piano",
+    "door",
     "desk",
     "chair",
     "fridge",
     "human",
     "dog",
     "cat",
-    "live animal",
-    "water cooler"
+    "animal",
+    "mountain"
 ]
 
 # Possible reasons for delivery failure
@@ -69,7 +69,7 @@ class RobotController:
         """Check, enqueue, and execute a delivery task."""
         # Check for forbidden items
         if item.lower() in FORBIDDEN_ITEMS:
-            message = f"Sorry, I cannot deliver '{item}' — it is too large, heavy, or unsafe for me to carry."
+            message = f"My apologies, I cannot deliver '{item}' — it is too large, heavy, or unsafe for me to carry."
             self.task_log.append(f"{datetime.now()}: Rejected delivery of {item}")
             return message
 
