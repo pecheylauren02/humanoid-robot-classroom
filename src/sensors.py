@@ -2,6 +2,14 @@ from abc import ABC, abstractmethod
 import random
 from typing import List
 
+# --- ANSI color codes ---
+RED = "\033[91m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+BLUE = "\033[94m"
+CYAN = "\033[96m"
+RESET = "\033[0m"
+
 
 class Sensor(ABC):
     """Abstract base class representing a generic sensor."""
@@ -30,7 +38,6 @@ class TemperatureSensor(Sensor):
 
     def read_data(self) -> float:
         """Simulate reading a new temperature value."""
-        # 10% chance of extreme high or low reading
         if random.random() < 0.1:
             extreme_change = random.choice([-5.0, 5.0, -7.0, 7.0])
             self.temperature = round(self.history[-1] + extreme_change, 2)
@@ -38,21 +45,12 @@ class TemperatureSensor(Sensor):
             self.temperature = round(self.history[-1] + random.uniform(-1.0, 1.0), 2)
 
         self.history.append(self.temperature)
-        print(f"\n[Sensor] Current temperature: {self.temperature}°C\n")
         return self.temperature
 
     def detect_anomaly(self, low: float = 18.0, high: float = 28.0) -> bool:
         """Check if the latest temperature reading is outside the safe range."""
         latest = self.history[-1]
-        if latest < low:
-            print(f"\n[Warning] It's too cold! Current temperature: {latest}°C ❄️")
-            print("Please close the windows or adjust the heating.")
-            return True
-        elif latest > high:
-            print(f"\n[Warning] It's too hot! Current temperature: {latest}°C ☀️")
-            print("Please turn on the air conditioner or open a window.")
-            return True
-        return False
+        return latest < low or latest > high
 
     def get_history(self) -> List[float]:
         """Return the full temperature history."""
