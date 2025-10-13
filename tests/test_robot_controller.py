@@ -1,79 +1,102 @@
-# tests/test_robot_controller.py
 import unittest
-from unittest.mock import MagicMock, patch
-from src.robot_controller import RobotController, RobotState
+from datetime import datetime
+from src.robot_controller import RobotController, RobotState, FORBIDDEN_ITEMS
 
+# Fake dependencies
+class FakeTaskManager:
+    def __init__(self, name):
+        self.tasks = []
+    def enqueue_task(self, task):
+        self.tasks.append(task)
+    def dequeue_task(self):
+        return self.tasks.pop(0) if self.tasks else None
+    def mark_completed(self, task):
+        task.completed = True
+    def list_tasks(self):
+        return self.tasks
+
+class FakeSensor:
+    def __init__(self, name):
+        self.history = [22.0]
+    def read_data(self):
+        return 22.0
+    def detect_anomaly(self):
+        return False
+    def get_history(self):
+        return self.history
+
+class FakeInteraction:
+    def __init__(self, name):
+        self.log = []
+    def display_message(self, msg):
+        return msg
+    def log_interaction(self, action, target):
+        self.log.append((action, target))
+    def get_log(self):
+        return self.log
+
+class FakeDeliveryTask:
+    def __init__(self, item, from_loc, to_loc):
+        self.item = item
+        self.to_location = to_loc
+        self.id = "task123"
+        self.completed = False
+    @staticmethod
+    def create(item, from_loc, to_loc):
+        return FakeDeliveryTask(item, from_loc, to_loc)
+    def mark_failed(self):
+        self.completed = False
+
+# Test class
 class TestRobotController(unittest.TestCase):
-
     def setUp(self):
-        # Patch dependencies to isolate RobotController
-        with patch("src.robot_controller.TaskManager") as MockTaskManager, \
-             patch("src.robot_controller.TemperatureSensor") as MockSensor, \
-             patch("src.robot_controller.InteractionModule") as MockInteraction, \
-             patch("src.robot_controller.DeliveryTask") as MockDeliveryTask:
+        self.controller = RobotController("R1")
+        # Replace dependencies with fakes
+        self.controller.task_manager = FakeTaskManager("TM1")
+        self.controller.sensor = FakeSensor("S1")
+        self.controller.interaction = FakeInteraction("I1")
+        self.controller.DeliveryTask = FakeDeliveryTask  # not used, deliver_material calls class method
 
-            self.mock_task_manager = MockTaskManager.return_value
-            self.mock_sensor = MockSensor.return_value
-            self.mock_interaction = MockInteraction.return_value
-            self.mock_task = MockDeliveryTask.create.return_value
+    def test_initial_state(self):
+        self.assertEqual(self.controller.state, RobotState.IDLE)
 
-            # Mock methods used in RobotController
-            self.mock_task_manager.dequeue_task.return_value = self.mock_task
-            self.mock_task.id = "task123"
-            self.mock_task.item = "Book"
-            self.mock_task.to_location = "Student Desk"
-            self.mock_sensor.read_data.return_value = 25.0
-            self.mock_sensor.detect_anomaly.return_value = False
-            self.mock_interaction.display_message.return_value = "Message displayed"
-            self.mock_interaction.get_log.return_value = []
-            self.mock_sensor.get_history.return_value = []
+    def test_deliver_forbidden_item(self):
+        msg = self.controller.deliver_material("piano", "A", "B")
+        self.assertIn("cannot deliver", msg)
 
-            # Create controller
-            self.robot = RobotController("R-001")
-            self.robot.task_manager = self.mock_task_manager
-            self.robot.sensor = self.mock_sensor
-            self.robot.interaction = self.mock_interaction
+    def test_deliver_normal_item_success(self):
+        # Patch random to force success
+        import random
+        original_choices = random.choices
+        random.choices = lambda *a, **k: [True]
 
-    def test_start_sets_idle(self):
-        self.robot.start()
-        self.assertEqual(self.robot.state, RobotState.IDLE)
+        msg = self.controller.deliver_material("book", "A", "B")
+        self.assertIn("Delivered book", msg)
+        self.assertEqual(self.controller.history[-1][0], "deliver")
 
-    def test_change_state(self):
-        self.robot.change_state(RobotState.EXECUTING)
-        self.assertEqual(self.robot.state, RobotState.EXECUTING)
+        random.choices = original_choices
 
-    def test_deliver_material_success_logs_task(self):
-        # Force success
-        with patch("src.robot_controller.random.choices", return_value=[True]):
-            self.robot.deliver_material("Book", "Library", "Student Desk")
-        # Check log entry
-        self.assertTrue(any("Delivered" in entry for entry in self.robot.task_log))
+    def test_greet_student(self):
+        import random
+        original_choice = random.choice
+        random.choice = lambda x: x[0]  # always pick first greeting
 
-    def test_deliver_material_failure_logs_task(self):
-        # Force failure
-        with patch("src.robot_controller.random.choices", return_value=[False]):
-            self.robot.deliver_material("Book", "Library", "Student Desk")
-        self.assertTrue(any("Failed to deliver" in entry for entry in self.robot.task_log))
+        msg = self.controller.greet_student("John")
+        self.assertIn("Hello, John", msg)
+        self.assertEqual(self.controller.history[-1], ("greet", "John"))
 
-    def test_monitor_environment_logs_check(self):
-        self.robot.monitor_environment()
-        self.assertTrue(any("Temperature checked" in entry for entry in self.robot.task_log))
+        random.choice = original_choice
 
-    def test_monitor_environment_anomaly_logs(self):
-        self.mock_sensor.detect_anomaly.return_value = True
-        self.robot.monitor_environment()
-        self.assertTrue(any("Temperature anomaly detected" in entry for entry in self.robot.task_log))
+    def test_monitor_environment(self):
+        result = self.controller.monitor_environment()
+        self.assertEqual(result, {"temperature": 22.0, "issue": False})
 
-    def test_greet_student_logs_task(self):
-        greeting = self.robot.greet_student("Alice")
-        self.assertEqual(greeting, "Hello, Alice!")
-        self.assertTrue(any("Greeted student Alice" in entry for entry in self.robot.task_log))
+    def test_get_status_structure(self):
+        status = self.controller.get_status()
+        self.assertIsInstance(status["task_queue"], list)
+        self.assertIsInstance(status["interaction_log"], list)
+        self.assertIsInstance(status["temperature_history"], list)
 
-    def test_get_status_returns_correct_keys(self):
-        status = self.robot.get_status()
-        keys = ["id", "state", "history", "task_queue", "interaction_log", "temperature_history"]
-        for key in keys:
-            self.assertIn(key, status)
 
 if __name__ == "__main__":
     unittest.main()

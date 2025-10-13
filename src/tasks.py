@@ -1,4 +1,12 @@
-# src/tasks.py
+"""
+tasks.py
+
+Defines the DeliveryTask class for managing delivery tasks assigned to
+the humanoid classroom robot. Each task includes a unique ID, item details,
+source and destination locations, and status tracking. Provides utility
+methods to create new tasks and update their completion or failure status.
+"""
+
 from dataclasses import dataclass
 import uuid
 

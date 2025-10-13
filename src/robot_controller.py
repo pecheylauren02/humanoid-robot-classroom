@@ -1,11 +1,22 @@
+"""
+Robot Controller Module
+
+Defines the RobotController class for managing humanoid robot operations,
+including task delivery, state management, environmental monitoring, and
+student interaction. Also includes the RobotState enumeration for tracking
+the robot's current operational state. Provides mechanisms for executing
+delivery tasks, handling errors, logging interactions, and monitoring
+sensor data such as temperature anomalies.
+"""
+
+import random
 from enum import Enum, auto
+from typing import Dict, List, Tuple
+from datetime import datetime
 from .task_manager import TaskManager
 from .sensors import TemperatureSensor
 from .interaction import InteractionModule
 from .tasks import DeliveryTask
-import random
-from typing import Dict, List, Tuple
-from datetime import datetime
 
 # List of objects the robot cannot deliver
 FORBIDDEN_ITEMS = [
@@ -73,6 +84,7 @@ class RobotController:
         from_location: str,
         to_location: str
     ) -> str:
+        """Delivers materials from one location to another."""
 
         """Check, enqueue, and execute a delivery task."""
         # Check for forbidden items

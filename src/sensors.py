@@ -1,3 +1,12 @@
+"""
+Sensors Module
+
+Defines abstract and concrete sensor classes for the humanoid classroom robot.
+Includes the base Sensor class and a TemperatureSensor implementation.
+Sensors simulate data readings, track historical values, and detect anomalies.
+ANSI color codes are provided for optional colored output in sensor reporting.
+"""
+
 from abc import ABC, abstractmethod
 import random
 from typing import List
