@@ -85,7 +85,7 @@ class RobotController:
             return "No tasks to execute."
 
         self.change_state(RobotState.EXECUTING)
-        print(self.interaction.display_message(f"Executing delivery {task.item} -> {task.to_location}"))
+        print(self.interaction.display_message(f"\nExecuting delivery {task.item} -> {task.to_location}"))
 
         # 85% chance success, 15% chance failure
         success = random.choices([True, False], weights=[0.85, 0.15])[0]

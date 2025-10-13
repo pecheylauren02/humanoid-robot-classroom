@@ -18,7 +18,7 @@ Key Features:
     - State transitions for the RobotController
     - Task log viewing
 """
-
+import re
 from .robot_controller import RobotController
 
 # --- ANSI color codes ---
@@ -66,9 +66,14 @@ def main():
 
     print(f"\n🤖{YELLOW} Hello{RESET} Teacher, and welcome! I am your {GREEN}HUMANOID CLASSROOM ROBOT{RESET}, ready to assist you today.")
 
-    teacher_name = input("\nBefore we begin, please tell me your name, Teacher: ").strip().title()
-    if not teacher_name:
-        teacher_name = "Teacher"
+    # Keep asking until the teacher enters a valid name
+    while True:
+        teacher_name = input("\nBefore we begin, please tell me your name, Teacher: ").strip().title()
+    
+        # Validate: only letters and spaces allowed
+        if teacher_name and re.fullmatch(r"[A-Za-z ]+", teacher_name):
+         break
+        print(f"{RED}Please enter a valid name containing only letters and spaces!{RESET}")
     print(f"\nWonderful to meet you, {CYAN}{teacher_name}{RESET}! I am fully operational and eager to help in your classroom.")
     print(f"\nI can assist with tasks like {GREEN}delivering items{RESET}, {RED}monitoring classroom temperature{RESET}, and {YELLOW}greeting students{RESET}.")
 
@@ -136,7 +141,7 @@ def main():
         elif verb == "greet" and len(parts) >= 2:
             name = " ".join(parts[1:])
             greeting = robot.greet_student(name)
-            print(f"\nAbsolutely: {greeting}\n")
+            print(f"\n{greeting}\n")
 
         elif verb == "status":
             status = robot.get_status()
@@ -154,7 +159,7 @@ def main():
             last = robot.interaction.undo_last()
             if last:
                 action, who = last
-                print(f"\n{CYAN}{teacher_name}{RESET}, I undid my last action: {action} for {who or 'robot'}.")
+                print(f"\n{CYAN}{teacher_name}{RESET}, I undid my last action: {action} for {who or 'robot'}.\n")
             else:
                 print(f"\nNothing to undo right now, {CYAN}{teacher_name}{RESET}. Everything’s up to date!\n")
 
@@ -179,7 +184,7 @@ def main():
             print("--------------------------\n")
 
         else:
-            print(f"\nOops! I did not understand that command. Type 'help' to see what I can do.\n")
+            print(f"\n{RED}Oops!{RESET} I did not understand that command. Type 'help' to see what I can do.\n")
 
 
 if __name__ == "__main__":
