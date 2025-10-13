@@ -132,14 +132,35 @@ class RobotController:
         return {"temperature": temp, "issue": False}
 
     def greet_student(self, name: str) -> str:
-        """Greet a student by name."""
+        """Greet a student by name with added personalization and mood simulation."""
         self.change_state(RobotState.EXECUTING)
-        msg = f"Hello, {name}!"
+
+        # Add small randomization for variety and realism
+        greetings = [
+            f"Hello, {name}! Nice to see you today 😊",
+            f"Good day, {name}! I hope you're ready to learn.",
+            f"Hey {name}! You look ready for class 🚀",
+            f"Greetings, {name}. Let’s make today productive!",
+            f"Hi {name}! I’m glad you’re here."
+        ]
+
+        # Occasionally, the robot reacts to the classroom temperature
+        current_temp = self.sensor.history[-1] if self.sensor.history else 22.0
+        temp_comment = ""
+        if current_temp < 19:
+            temp_comment = " Brrr... it feels a bit chilly in here today ❄️"
+        elif current_temp > 27:
+            temp_comment = " Phew, it’s quite warm! I hope the fans are on ☀️"
+
+        msg = random.choice(greetings) + temp_comment
+
+        # Log everything
         self.interaction.log_interaction("greet", name)
         self.history.append(("greet", name))
-        self.task_log.append(f"{datetime.now()}: Greeted student {name}")
+        self.task_log.append(f"{datetime.now()}: Greeted student {name} (Temp: {current_temp}°C)")
         self.change_state(RobotState.COMPLETED)
         self.change_state(RobotState.IDLE)
+
         return msg
 
     def get_status(self) -> Dict:
