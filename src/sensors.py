@@ -29,7 +29,7 @@ class Sensor(ABC):
 
 
 class TemperatureSensor(Sensor):
-    """Temperature sensor that tracks temperature readings and detects anomalies."""
+    """Tracks temperature readings and detects anomalies."""
 
     def __init__(self, id_: str, baseline: float = 22.0):
         super().__init__(id_)
@@ -42,13 +42,15 @@ class TemperatureSensor(Sensor):
             extreme_change = random.choice([-5.0, 5.0, -7.0, 7.0])
             self.temperature = round(self.history[-1] + extreme_change, 2)
         else:
-            self.temperature = round(self.history[-1] + random.uniform(-1.0, 1.0), 2)
+            self.temperature = round(
+                self.history[-1] + random.uniform(-1.0, 1.0), 2
+            )
 
         self.history.append(self.temperature)
         return self.temperature
 
     def detect_anomaly(self, low: float = 18.0, high: float = 28.0) -> bool:
-        """Check if the latest temperature reading is outside the safe range."""
+        """Check if the latest temp reading is outside the safe range."""
         latest = self.history[-1]
         return latest < low or latest > high
 

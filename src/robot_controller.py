@@ -35,6 +35,7 @@ FAILURE_REASONS = [
     "internal system error"
 ]
 
+
 class RobotState(Enum):
     """Enumeration representing the various states of the humanoid robot."""
     IDLE = auto()
@@ -42,6 +43,7 @@ class RobotState(Enum):
     COMPLETED = auto()
     ERROR = auto()
     RECOVERING = auto()
+
 
 class RobotController:
     """Controller for managing humanoid robot operations."""
@@ -65,12 +67,23 @@ class RobotController:
         self.change_state(RobotState.IDLE)
         print(self.interaction.display_message("Robot ready."))
 
-    def deliver_material(self, item: str, from_location: str, to_location: str) -> str:
+    def deliver_material(
+        self,
+        item: str,
+        from_location: str,
+        to_location: str
+    ) -> str:
+
         """Check, enqueue, and execute a delivery task."""
         # Check for forbidden items
         if item.lower() in FORBIDDEN_ITEMS:
-            message = f"My apologies, I cannot deliver '{item}' — it is too large, heavy, or unsafe for me to carry."
-            self.task_log.append(f"{datetime.now()}: Rejected delivery of {item}")
+            message = (
+                f"My apologies, I cannot deliver '{item}' — "
+                "it is too large, heavy, or unsafe for me to carry."
+            )
+            self.task_log.append(
+                f"{datetime.now()}: Rejected delivery of {item}"
+            )
             return message
 
         # Otherwise, create task normally
@@ -85,8 +98,11 @@ class RobotController:
             return "No tasks to execute."
 
         self.change_state(RobotState.EXECUTING)
-        print(self.interaction.display_message(f"\nExecuting delivery {task.item} -> {task.to_location}"))
-
+        print(
+            self.interaction.display_message(
+                f"\nExecuting delivery {task.item} -> {task.to_location}"
+            )
+        )
         # 85% chance success, 15% chance failure
         success = random.choices([True, False], weights=[0.85, 0.15])[0]
 
@@ -96,19 +112,29 @@ class RobotController:
             self.interaction.log_interaction("deliver", task.to_location)
             self.change_state(RobotState.COMPLETED)
             self.change_state(RobotState.IDLE)
-            self.task_log.append(f"{datetime.now()}: Delivered {task.item} to {task.to_location}")
+            self.task_log.append(
+                f"{datetime.now()}: Sent {task.item} to {task.to_location}"
+            )
             return f"Delivered {task.item} to {task.to_location}"
 
         else:
             reason = random.choice(FAILURE_REASONS)
             task.mark_failed()
             self.history.append(("deliver_failed", task.id))
-            self.interaction.log_interaction("deliver_failed", task.to_location)
+            self.interaction.log_interaction(
+                "deliver_failed",
+                task.to_location
+            )
             self.change_state(RobotState.ERROR)
             self.recover_from_error()
-            self.task_log.append(f"{datetime.now()}: Failed to deliver {task.item} to {task.to_location} — {reason}")
+            self.task_log.append(
+                f"{datetime.now()}: Failed to deliver {task.item} "
+                f"to {task.to_location} — {reason}"
+            )
+
             return (
-                f"Delivery of {task.item} to {task.to_location} failed because {reason}. "
+                f"Delivery of {task.item} to {task.to_location} "
+                f"failed because {reason}. "
                 "Please try again in a few minutes."
             )
 
@@ -124,15 +150,17 @@ class RobotController:
         self.history.append(("monitor", temp))
         if anomaly:
             self.interaction.log_interaction("temperature_anomaly", str(temp))
-            self.task_log.append(f"{datetime.now()}: Temperature anomaly detected: {temp}°C")
+            self.task_log.append(
+                f"{datetime.now()}: Temperature anomaly detected: {temp}°C"
+            )
             return {"temperature": temp, "issue": True}
 
         self.interaction.log_interaction("temperature_ok", str(temp))
-        self.task_log.append(f"{datetime.now()}: Temperature checked: {temp}°C")
+        self.task_log.append(f"{datetime.now()}: Temp checked: {temp}°C")
         return {"temperature": temp, "issue": False}
 
     def greet_student(self, name: str) -> str:
-        """Greet a student by name with added personalization and mood simulation."""
+        """Greet a student by name with added personalization."""
         self.change_state(RobotState.EXECUTING)
 
         # Add small randomization for variety and realism
@@ -157,7 +185,11 @@ class RobotController:
         # Log everything
         self.interaction.log_interaction("greet", name)
         self.history.append(("greet", name))
-        self.task_log.append(f"{datetime.now()}: Greeted student {name} (Temp: {current_temp}°C)")
+        self.task_log.append(
+            f"{datetime.now()}: Greeted student {name} "
+            f"(Temp: {current_temp}°C)"
+        )
+
         self.change_state(RobotState.COMPLETED)
         self.change_state(RobotState.IDLE)
 

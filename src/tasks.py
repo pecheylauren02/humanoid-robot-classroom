@@ -1,7 +1,6 @@
 # src/tasks.py
 from dataclasses import dataclass
 import uuid
-from typing import Optional
 
 
 @dataclass
@@ -17,7 +16,13 @@ class DeliveryTask:
     status: str = "Pending"
 
     @classmethod
-    def create(cls, item: str, from_location: str, to_location: str) -> "DeliveryTask":
+    def create(
+        cls,
+        item: str,
+        from_location: str,
+        to_location: str
+    ) -> "DeliveryTask":
+
         """
         Factory method to create a new DeliveryTask with a unique ID.
 
@@ -29,7 +34,12 @@ class DeliveryTask:
         Returns:
             DeliveryTask: A new DeliveryTask instance with a unique ID.
         """
-        return cls(id=str(uuid.uuid4()), item=item, from_location=from_location, to_location=to_location)
+        return cls(
+            id=str(uuid.uuid4()),
+            item=item,
+            from_location=from_location,
+            to_location=to_location
+        )
 
     def mark_completed(self) -> None:
         """

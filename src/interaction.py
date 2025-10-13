@@ -4,7 +4,7 @@ Interaction Module for Humanoid Classroom Robot
 Handles user and robot interactions, logging, and undo functionality.
 
 Classes:
-    - InteractionModule: Manages interaction logs, displays messages, 
+    - InteractionModule: Manages interaction logs, displays messages,
       records actions, and allows undoing the last interaction.
 
 Key Features:
@@ -24,8 +24,8 @@ class InteractionModule:
 
     Attributes:
         id (str): Identifier for this interaction module instance.
-        interaction_log (List[Tuple[str, Optional[str]]]): History of all actions.
-        undo_stack (List[Tuple[str, Optional[str]]]): Stack for undoable actions.
+        interaction_log: History of all actions.
+        undo_stack: Stack for undoable actions.
         verbose (bool): If True, prints debug messages for developers.
     """
 
@@ -65,7 +65,8 @@ class InteractionModule:
         Undo the most recent logged action.
 
         Returns:
-        tuple | None: (action, who) of the undone action, or None if nothing to undo.
+        tuple | None: (action, who) of the undone action,
+        or None if nothing to undo.
         """
         if not self.undo_stack:
             return None
